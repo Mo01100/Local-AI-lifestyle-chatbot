@@ -53,6 +53,8 @@ scripts\download_piper.bat
 
 ### Step 2: Download & Prepare Datasets
 
+> **Note:** The raw datasets and AI models for this project total over 2.8 GB, which exceeds GitHub's size limits. They are not included in this repository and must be downloaded manually.
+
 Manually download datasets from Kaggle into their respective folders:
 1. **Daily Food and Nutrition Dataset** ➔ `data/raw/nutrition/`
 2. **Food.com Recipes and User Interactions** ➔ `data/raw/recipes/`
