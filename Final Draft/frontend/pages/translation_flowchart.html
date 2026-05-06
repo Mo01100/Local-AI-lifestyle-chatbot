@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation Flowchart</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        .mermaid { display: flex; justify-content: center; }
+    </style>
+</head>
+<body>
+    <h2>Multilingual Translation and Processing Pipeline</h2>
+    <div class="mermaid">
+        graph TD
+            A[User Speaks/Types in Native Language] --> B[Frontend Client Interface]
+            B --> C[FastAPI Backend Server]
+            C --> D{Is Input English?}
+            D -- Yes --> F[RAG Retrieval Pipeline]
+            D -- No --> E[Argos Translate Module: Translate to English]
+            E --> F
+            F --> G[Extract Context from Vector database]
+            G --> H[Local Llama 3.2 Model Processes Query]
+            H --> I[Llama Generates English Response]
+            I --> J{Was Original Input English?}
+            J -- Yes --> L[Final Response Ready]
+            J -- No --> K[Argos Translate Module: Translate back to Native Language]
+            K --> L
+            L --> M[FastAPI Backend Server]
+            M --> N[Frontend Client Interface]
+            N --> O[Piper TTS Audio & Interface Text Display]
+    </div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Figure 12 - Translation Quality Table</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; padding: 40px; }
+  h2 { color: #1a1a2e; margin-bottom: 4px; }
+  p { color: #555; font-size: 13px; margin-bottom: 20px; }
+  table { border-collapse: collapse; width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  th { background: #1a1a2e; color: white; padding: 12px 16px; text-align: left; font-size: 13px; }
+  td { padding: 11px 16px; font-size: 13px; border-bottom: 1px solid #eee; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f0f4ff; }
+  .lang-header td { background: #e8eaf6; font-weight: bold; font-size: 13px; color: #3949ab; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+  .Good { background: #e8f5e9; color: #2e7d32; }
+  .Moderate { background: #fff3e0; color: #e65100; }
+  .Poor { background: #fce4ec; color: #c62828; }
+  .time { color: #999; font-size: 11px; }
+</style>
+</head>
+<body>
+<h2>Figure 12: Translation Quality Comparison Table</h2>
+<p>Argos Translate tested across French, Spanish, German, and Arabic using exercise and lifestyle queries.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Language</th>
+      <th>Sample Input</th>
+      <th>Translated Output (English)</th>
+      <th>Accuracy Rating</th>
+      <th>Response Time</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr class="lang-header"><td colspan="5">French</td></tr>
+<tr>
+      <td>French</td>
+      <td dir="ltr">Quels exercices puis-je faire pour perdre du poids ?</td>
+      <td>What exercises can I do to lose weight?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.0s</td>
+    </tr>
+<tr>
+      <td>French</td>
+      <td dir="ltr">Combien de calories brule une heure de marche ?</td>
+      <td>How many calories burn an hour of walking?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.92s</td>
+    </tr>
+<tr>
+      <td>French</td>
+      <td dir="ltr">Quelle est la meilleure alimentation pour les muscles ?</td>
+      <td>What is the best diet for muscles?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.0s</td>
+    </tr>
+<tr>
+      <td>French</td>
+      <td dir="ltr">Puis-je faire du sport avec une blessure au genou ?</td>
+      <td>Can I play sports with a knee injury?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.0s</td>
+    </tr>
+<tr class="lang-header"><td colspan="5">Spanish</td></tr>
+<tr>
+      <td>Spanish</td>
+      <td dir="ltr">Cuantos vasos de agua debo beber al dia?</td>
+      <td>How many glasses of water do I have to drink a day?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.84s</td>
+    </tr>
+<tr>
+      <td>Spanish</td>
+      <td dir="ltr">Cuales son los mejores ejercicios para el abdomen?</td>
+      <td>What are the best abdominal exercises?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.03s</td>
+    </tr>
+<tr>
+      <td>Spanish</td>
+      <td dir="ltr">Como puedo mejorar mi resistencia fisica?</td>
+      <td>How can I improve my physical resistance?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.03s</td>
+    </tr>
+<tr>
+      <td>Spanish</td>
+      <td dir="ltr">Que debo comer antes de hacer ejercicio?</td>
+      <td>What should I eat before exercising?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.03s</td>
+    </tr>
+<tr class="lang-header"><td colspan="5">German</td></tr>
+<tr>
+      <td>German</td>
+      <td dir="ltr">Wie viele Kalorien hat ein Apfel?</td>
+      <td>How many calories does an apple have?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.0s</td>
+    </tr>
+<tr>
+      <td>German</td>
+      <td dir="ltr">Was sind gute Ubungen fur den Rucken?</td>
+      <td>What are good exercises for the pack?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.45s</td>
+    </tr>
+<tr>
+      <td>German</td>
+      <td dir="ltr">Wie oft sollte ich in der Woche trainieren?</td>
+      <td>How many times should I train in the week?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.0s</td>
+    </tr>
+<tr>
+      <td>German</td>
+      <td dir="ltr">Welche Lebensmittel helfen beim Abnehmen?</td>
+      <td>What foods help to lose weight?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.0s</td>
+    </tr>
+<tr class="lang-header"><td colspan="5">Arabic</td></tr>
+<tr>
+      <td>Arabic</td>
+      <td dir="rtl">ما هي أفضل تمارين لفقدان الوزن؟</td>
+      <td>What are the best weight loss exercises?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.0s</td>
+    </tr>
+<tr>
+      <td>Arabic</td>
+      <td dir="rtl">كم عدد السعرات في وجبة إفطار صحية؟</td>
+      <td>How many calories in a healthy breakfast?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.46s</td>
+    </tr>
+<tr>
+      <td>Arabic</td>
+      <td dir="rtl">ما هي الأطعمة الغنية بالبروتين؟</td>
+      <td>What are protein-rich foods?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.03s</td>
+    </tr>
+<tr>
+      <td>Arabic</td>
+      <td dir="rtl">كيف أحسن لياقتي البدنية في المنزل؟</td>
+      <td>How's my fitness better at home?</td>
+      <td><span class="badge Good">Good</span></td>
+      <td class="time">0.03s</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Figure 16 - Speech Recognition Accuracy</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5f5f5;
+    padding: 40px;
+  }
+  h2 { color: #1a1a2e; margin-bottom: 4px; font-size: 18px; }
+  .subtitle { color: #555; font-size: 13px; margin-bottom: 30px; line-height: 1.6; }
+  .chart-box {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-width: 760px;
+  }
+  .axis-title {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 24px;
+  }
+  .bar-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 40px;
+    height: 260px;
+    border-left: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+    padding: 0 40px 0 20px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  /* Y-axis gridlines */
+  .gridlines {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .gridline {
+    border-top: 1px dashed #eee;
+    display: flex;
+    align-items: center;
+  }
+  .gridline-label {
+    font-size: 11px;
+    color: #bbb;
+    margin-left: -42px;
+    width: 36px;
+    text-align: right;
+  }
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  .bar {
+    width: 100%;
+    max-width: 120px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10px;
+    transition: all 0.3s;
+  }
+  .bar-pct {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .bar-name {
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    text-align: center;
+  }
+  .bar-sub {
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+    margin-top: 2px;
+  }
+  .x-axis-label {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 24px;
+  }
+  .breakdown-table {
+    margin-top: 30px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .breakdown-table th {
+    background: #1a1a2e;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .breakdown-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #444;
+  }
+  .breakdown-table tr:last-child td { border-bottom: none; }
+  .breakdown-table tr:nth-child(even) td { background: #fafafa; }
+  .good  { color: #2e7d32; font-weight: 600; }
+  .poor  { color: #c62828; font-weight: 600; }
+  .caption {
+    font-size: 12px;
+    color: #888;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<h2>Figure 16: Speech Recognition Accuracy Under Different Conditions</h2>
+<p class="subtitle">
+  Comparison of Word Error Rate and accuracy percentage across four testing conditions.<br>
+  30 spoken queries were tested per condition. Accuracy = correct transcriptions / total queries.
+</p>
+
+<div class="chart-box">
+
+  <div class="axis-title">Recognition Accuracy (%)</div>
+
+  <div class="bar-group">
+    <!-- Gridlines -->
+    <div class="gridlines">
+      <div class="gridline"><span class="gridline-label">100%</span></div>
+      <div class="gridline"><span class="gridline-label">80%</span></div>
+      <div class="gridline"><span class="gridline-label">60%</span></div>
+      <div class="gridline"><span class="gridline-label">40%</span></div>
+      <div class="gridline"><span class="gridline-label">20%</span></div>
+      <div class="gridline"><span class="gridline-label">0%</span></div>
+    </div>
+
+    <!-- Bar 1: Clear English -->
+    <div class="bar-col">
+      <div class="bar" style="height:93%; background: linear-gradient(160deg,#43a047,#1b5e20);">
+        <span class="bar-pct">93%</span>
+      </div>
+      <div class="bar-name">Clear Conditions</div>
+      <div class="bar-sub">(English, quiet room)</div>
+    </div>
+
+    <!-- Bar 2: Noisy Conditions -->
+    <div class="bar-col">
+      <div class="bar" style="height:71%; background: linear-gradient(160deg,#ef5350,#b71c1c);">
+        <span class="bar-pct">71%</span>
+      </div>
+      <div class="bar-name">Noisy Conditions</div>
+      <div class="bar-sub">(Background noise)</div>
+    </div>
+
+    <!-- Bar 3: Accented Speech -->
+    <div class="bar-col">
+      <div class="bar" style="height:76%; background: linear-gradient(160deg,#fb8c00,#e65100);">
+        <span class="bar-pct">76%</span>
+      </div>
+      <div class="bar-name">Accented Speech</div>
+      <div class="bar-sub">(Non-native speakers)</div>
+    </div>
+
+    <!-- Bar 4: Technical Terms -->
+    <div class="bar-col">
+      <div class="bar" style="height:83%; background: linear-gradient(160deg,#1e88e5,#0d47a1);">
+        <span class="bar-pct">83%</span>
+      </div>
+      <div class="bar-name">Technical Terms</div>
+      <div class="bar-sub">(Medical/exercise vocab)</div>
+    </div>
+  </div>
+
+  <div class="x-axis-label">Testing Condition</div>
+
+  <!-- Breakdown details table -->
+  <table class="breakdown-table">
+    <thead>
+      <tr>
+        <th>Condition</th>
+        <th>Queries Tested</th>
+        <th>Correct</th>
+        <th>Errors</th>
+        <th>Accuracy</th>
+        <th>Main Error Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Clear Conditions</td>
+        <td>30</td>
+        <td>28</td>
+        <td>2</td>
+        <td class="good">93%</td>
+        <td>Technical vocabulary</td>
+      </tr>
+      <tr>
+        <td>Noisy Conditions</td>
+        <td>30</td>
+        <td>21</td>
+        <td>9</td>
+        <td class="poor">71%</td>
+        <td>Short words misheard</td>
+      </tr>
+      <tr>
+        <td>Accented Speech</td>
+        <td>30</td>
+        <td>23</td>
+        <td>7</td>
+        <td class="poor">76%</td>
+        <td>Phoneme substitutions</td>
+      </tr>
+      <tr>
+        <td>Technical Terms</td>
+        <td>30</td>
+        <td>25</td>
+        <td>5</td>
+        <td>83%</td>
+        <td>Uncommon medical words</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="caption">
+    Clear conditions represent a quiet indoor environment with neutral English pronunciation and standard microphone placement.
+    Noisy conditions introduced ambient sounds at approximately 65dB. Accented speech tests used non-native English speakers.
+    Technical terms tests used exercise and nutrition vocabulary such as "cardiovascular", "caloric deficit", and "hypertrophy".
+    All tests used the browser-native Web Speech API connected to the application frontend.
+  </div>
+
+</div>
+</body>
+</html>

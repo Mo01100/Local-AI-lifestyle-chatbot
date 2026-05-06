@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Lifestyle Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1><i class="fas fa-robot"></i> AI Lifestyle</h1>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item active" data-page="chat">
+                <i class="fas fa-comments"></i>
+                <span>Chat</span>
+            </li>
+            <li class="nav-item" data-page="history">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </li>
+            <li class="nav-item" data-page="planning">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Daily Planning</span>
+            </li>
+            <li class="nav-item" data-page="reminders">
+                <i class="fas fa-bell"></i>
+                <span>Reminders</span>
+            </li>
+            <li class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </li>
+            <li class="nav-item" data-page="about">
+                <i class="fas fa-info-circle"></i>
+                <span>About</span>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="mainContent">
+        <!-- Chat Page -->
+        <div class="page active" id="chatPage">
+            <div class="chat-layout">
+                <!-- Conversation Sidebar -->
+                <div class="conversation-sidebar" id="conversationSidebar">
+                    <div class="conversation-sidebar-header">
+                        <h3>Conversations</h3>
+                        <button class="btn btn-sm btn-primary" id="newChatBtnSidebar">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="conversation-list" id="conversationListSidebar">
+                        <!-- Conversations will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Main Chat Area -->
+                <div class="chat-main">
+                    <div class="page-header">
+                        <div class="header-left">
+                            <button class="btn btn-secondary sidebar-toggle-btn" id="toggleConversationSidebar">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <h2 id="currentConversationTitle">New Conversation</h2>
+                        </div>
+                        <div class="header-actions">
+                            <select id="domainSelector" class="domain-selector">
+                                <option value="all">All Topics</option>
+                                <option value="nutrition">Nutrition</option>
+                                <option value="exercise">Exercise</option>
+                            </select>
+                            <button class="btn btn-primary" id="newChatBtn">
+                                <i class="fas fa-plus"></i> New Chat
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="chat-container">
+                        <div class="messages" id="messages"></div>
+                        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <textarea id="chatInput" placeholder="Type your message in any language..." rows="1"></textarea>
+                        <select id="speechLang" class="speech-lang-selector" title="Speech language">
+                            <option value="en-US">🇺🇸 EN</option>
+                            <option value="ar-SA">🇸🇦 AR</option>
+                            <option value="es-ES">🇪🇸 ES</option>
+                            <option value="fr-FR">🇫🇷 FR</option>
+                            <option value="de-DE">🇩🇪 DE</option>
+                            <option value="zh-CN">🇨🇳 ZH</option>
+                            <option value="hi-IN">🇮🇳 HI</option>
+                        </select>
+                        <span id="ttsLangBadge" class="tts-lang-badge hidden" title="TTS voice language">🔊 🇺🇸
+                            EN</span>
+                        <button id="ttsToggleBtn" class="btn btn-tts-toggle hidden" title="Disable text-to-speech">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <button id="micBtn" class="btn btn-mic" title="Voice input (Browser)">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button id="sendBtn" class="btn btn-send">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Page -->
+        <div class="page" id="historyPage">
+            <div class="page-header">
+                <h2>Conversation History</h2>
+                <input type="text" id="historySearch" placeholder="Search conversations..." class="search-input">
+            </div>
+            <div class="conversations-list" id="conversationsList"></div>
+        </div>
+
+        <!-- Planning Page -->
+        <div class="page" id="planningPage">
+            <div class="page-header">
+                <h2>Daily Planning</h2>
+                <input type="date" id="planDate" class="date-input">
+            </div>
+            <div class="planning-form">
+                <div class="form-section">
+                    <h3><i class="fas fa-utensils"></i> Meals</h3>
+                    <div class="form-group">
+                        <label>Breakfast</label>
+                        <textarea id="breakfast" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Lunch</label>
+                        <textarea id="lunch" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Dinner</label>
+                        <textarea id="dinner" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Snacks</label>
+                        <textarea id="snacks" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-dumbbell"></i> Exercise</h3>
+                    <div class="form-group">
+                        <textarea id="exercise" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-heart"></i> Wellness Goals</h3>
+                    <div class="form-group">
+                        <textarea id="wellnessGoals" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-sticky-note"></i> Notes</h3>
+                    <div class="form-group">
+                        <textarea id="notes" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-block" id="savePlanBtn">
+                    <i class="fas fa-save"></i> Save Plan
+                </button>
+            </div>
+        </div>
+
+        <!-- Reminders Page -->
+        <div class="page" id="remindersPage">
+            <div class="page-header">
+                <h2>Reminders</h2>
+                <button class="btn btn-primary" id="addReminderBtn">
+                    <i class="fas fa-plus"></i> Add Reminder
+                </button>
+            </div>
+            <div class="reminders-list" id="remindersList"></div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page" id="settingsPage">
+            <div class="page-header">
+                <h2>Settings</h2>
+            </div>
+            <div class="settings-container">
+
+                <!-- Accessibility -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <i class="fas fa-universal-access"></i>
+                        <h2>Accessibility</h2>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Contrast Mode</span>
+                            <small>Adjust display contrast for readability</small>
+                        </div>
+                        <select id="contrastMode" class="setting-select">
+                            <option value="normal">Normal</option>
+                            <option value="high">High Contrast</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Brightness</span>
+                            <small>Adjust the overall page brightness</small>
+                        </div>
+                        <div class="setting-slider-group">
+                            <input type="range" id="brightness" min="50" max="150" value="100" class="setting-slider">
+                            <span id="brightnessValue" class="setting-value-badge">100%</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Font Size</span>
+                            <small>Change the text size throughout the app</small>
+                        </div>
+                        <select id="fontSize" class="setting-select">
+                            <option value="small">Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                            <option value="xlarge">Extra Large</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Appearance -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <i class="fas fa-palette"></i>
+                        <h2>Appearance</h2>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Theme</span>
+                            <small>Switch between light and dark mode</small>
+                        </div>
+                        <select id="theme" class="setting-select">
+                            <option value="light">☀️ Light</option>
+                            <option value="dark">🌙 Dark</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Language -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <i class="fas fa-language"></i>
+                        <h2>Language</h2>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Preferred Language</span>
+                            <small>Sets the app's display language</small>
+                        </div>
+                        <select id="language" class="setting-select">
+                            <option value="en">🇺🇸 English</option>
+                            <option value="ar">🇸🇦 Arabic (العربية)</option>
+                            <option value="es">🇪🇸 Spanish (Español)</option>
+                            <option value="fr">🇫🇷 French (Français)</option>
+                            <option value="de">🇩🇪 German (Deutsch)</option>
+                            <option value="zh">🇨🇳 Chinese (中文)</option>
+                            <option value="hi">🇮🇳 Hindi (हिन्दी)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <i class="fas fa-bell"></i>
+                        <h2>Notifications</h2>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Enable Notifications</span>
+                            <small>Show in-app alerts and messages</small>
+                        </div>
+                        <label class="setting-toggle">
+                            <input type="checkbox" id="notificationsEnabled" checked>
+                            <span>Enabled</span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span>Notification Sound</span>
+                            <small>Play a sound when new messages arrive</small>
+                        </div>
+                        <label class="setting-toggle">
+                            <input type="checkbox" id="notificationSound" checked>
+                            <span>Enabled</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div class="page" id="aboutPage">
+            <div class="page-header">
+                <h2>About AI Lifestyle Chatbot</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-section">
+                    <h3>Overview</h3>
+                    <p>AI Lifestyle Chatbot is a 100% offline, privacy-focused AI assistant designed to help you with
+                        nutrition, fitness, and wellness guidance.</p>
+                </div>
+
+                <div class="about-section">
+                    <h3>Features</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Multi-language support (7 languages)</li>
+                        <li><i class="fas fa-check"></i> RAG-powered responses from knowledge base</li>
+                        <li><i class="fas fa-check"></i> Conversation history storage</li>
+                        <li><i class="fas fa-check"></i> Daily meal and exercise planning</li>
+                        <li><i class="fas fa-check"></i> Reminder system</li>
+                        <li><i class="fas fa-check"></i> Accessibility features</li>
+                        <li><i class="fas fa-check"></i> 100% offline operation</li>
+                        <li><i class="fas fa-check"></i> Complete data privacy</li>
+                    </ul>
+                </div>
+
+                <div class="about-section">
+                    <h3>Technology Stack</h3>
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <strong>LLM:</strong> Llama 3.2 via Ollama
+                        </div>
+                        <div class="tech-item">
+                            <strong>RAG:</strong> ChromaDB + Sentence Transformers
+                        </div>
+                        <div class="tech-item">
+                            <strong>Translation:</strong> Argos Translate
+                        </div>
+                        <div class="tech-item">
+                            <strong>Backend:</strong> FastAPI + SQLite
+                        </div>
+                        <div class="tech-item">
+                            <strong>Frontend:</strong> HTML/CSS/JavaScript
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h3>Privacy & Security</h3>
+                    <p><strong>100% Offline:</strong> All processing happens locally on your device. No data is sent to
+                        external servers.</p>
+                    <p><strong>No Tracking:</strong> We don't collect, store, or transmit any usage data.</p>
+                    <p><strong>Local Storage:</strong> All conversations and data are stored locally in SQLite database.
+                    </p>
+                </div>
+
+                <div class="about-section">
+                    <h3>System Architecture & Performance Figures</h3>
+                    <p>Explore the detailed system architecture and performance metrics below:</p>
+                    <ul class="feature-list" style="margin-top: 15px;">
+                        <li><i class="fas fa-project-diagram"></i> <a href="../rag_retrieval_diagram.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">RAG Retrieval Architecture Diagram</a></li>
+                        <li><i class="fas fa-sitemap"></i> <a href="../translation_flowchart.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Translation Flowchart</a></li>
+                        <li><i class="fas fa-table"></i> <a href="../figure12_translation_table.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Figure 12: Translation Evaluation Table</a></li>
+                        <li><i class="fas fa-chart-line"></i> <a href="../figure13_latency_chart.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Figure 13: System Latency Chart</a></li>
+                        <li><i class="fas fa-chart-pie"></i> <a href="../figure16_speech_accuracy.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Figure 16: Speech Recognition Accuracy</a></li>
+                    </ul>
+                </div>
+
+                <div class="about-section">
+                    <h3>Disclaimer</h3>
+                    <p class="disclaimer">This chatbot provides general information for educational purposes only. It is
+                        not a substitute for professional medical, nutritional, or mental health advice. Always consult
+                        qualified healthcare professionals for personalized guidance.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reminder Modal -->
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="reminderModalTitle">Add Reminder</h3>
+                <button class="modal-close" id="closeReminderModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="reminderTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="reminderDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="reminderCategory">
+                        <option value="meal">Meal</option>
+                        <option value="exercise">Exercise</option>
+                        <option value="medication">Medication</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Due Date & Time *</label>
+                    <input type="datetime-local" id="reminderDateTime" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="reminderRecurring">
+                        Recurring
+                    </label>
+                </div>
+                <div class="form-group" id="recurrenceGroup" style="display: none;">
+                    <label>Recurrence Pattern</label>
+                    <select id="recurrencePattern">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelReminderBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveReminderBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/tts.js"></script>
+    <script src="js/speech.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/history.js"></script>
+    <script src="js/planning.js"></script>
+    <script src="js/reminders.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+
+</html>
