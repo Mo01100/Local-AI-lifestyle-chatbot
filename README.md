@@ -40,6 +40,15 @@ pip install -r backend/requirements.txt
 
 # Download Llama 3.2 model
 ollama pull llama3.2
+
+# Download Translation Models (Argos Translate)
+python scripts/translation/install_translation_models.py
+
+# Download Speech-to-Text Models (Vosk)
+python scripts/speech/download_vosk_models.py
+
+# Download Text-to-Speech Models (Piper TTS)
+scripts\download_piper.bat
 ```
 
 ### Step 2: Download & Prepare Datasets
