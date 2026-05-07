@@ -76,6 +76,15 @@ function initSettings() {
 
     // ── Notifications ─────────────────────────────────────────────────────────
     document.getElementById('notificationsEnabled').addEventListener('change', async (e) => {
+        if (e.target.checked) {
+            if (window.Notification && Notification.permission !== 'granted') {
+                const permission = await Notification.requestPermission();
+                if (permission !== 'granted') {
+                    e.target.checked = false; // Revert to unchecked if user denies
+                    showNotification('Notification permission denied by browser.', 'error');
+                }
+            }
+        }
         await updateSettings({ notifications_enabled: e.target.checked });
     });
 
