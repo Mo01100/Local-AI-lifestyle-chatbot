@@ -17,6 +17,9 @@
 // When set to a numeric ID, the form is in "Edit" mode (PUT request will be used).
 let editingReminderId = null;
 
+// Track active timeouts for reminders so we can clear them on refresh
+let reminderTimeouts = [];
+
 // ─── Boot Sequence ────────────────────────────────────────────────────────────
 // Attach event listeners once the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
@@ -66,6 +69,7 @@ async function loadReminders() {
         const reminders = await response.json();
 
         displayReminders(reminders);  // Render the fetched list
+        scheduleReminders(reminders); // Schedule active notifications
     } catch (error) {
         console.error('Error loading reminders:', error);
         // Inline error rather than failing silently
@@ -312,5 +316,90 @@ async function deleteReminder(id) {
     } catch (error) {
         console.error('Error deleting reminder:', error);
         showNotification('Error deleting reminder', 'error');
+    }
+}
+
+/**
+ * Schedule active reminders to trigger a notification when their time is due.
+ * 
+ * @param {Array} reminders - Full list of reminders
+ */
+function scheduleReminders(reminders) {
+    // Clear any existing scheduled timeouts
+    reminderTimeouts.forEach(clearTimeout);
+    reminderTimeouts = [];
+
+    const now = new Date().getTime();
+
+    reminders.forEach(reminder => {
+        // Skip completed reminders
+        if (reminder.is_completed) return;
+
+        const dueTime = new Date(reminder.due_datetime).getTime();
+        const timeUntilDue = dueTime - now;
+
+        // Only schedule if it's in the future and less than 24 hours away
+        // (to avoid excessively large timeout values)
+        if (timeUntilDue > 0 && timeUntilDue < 24 * 60 * 60 * 1000) {
+            const timeoutId = setTimeout(() => {
+                triggerReminderNotification(reminder);
+            }, timeUntilDue);
+            reminderTimeouts.push(timeoutId);
+        }
+    });
+}
+
+/**
+ * Trigger the visual and audio notification for a due reminder.
+ * Checks the user's settings before notifying.
+ * 
+ * @param {Object} reminder - The reminder object that is due
+ */
+function triggerReminderNotification(reminder) {
+    // Read current settings state directly from the DOM 
+    const notificationsEnabled = document.getElementById('notificationsEnabled')?.checked;
+    const soundEnabled = document.getElementById('notificationSound')?.checked;
+
+    if (notificationsEnabled) {
+        // Use HTML5 Notification API if permission is granted
+        if (Notification.permission === 'granted') {
+            new Notification('Reminder: ' + reminder.title, {
+                body: reminder.description || 'It is time for your reminder!'
+            });
+        } else {
+            // Fallback to basic notification
+            showNotification(`Reminder: ${reminder.title}`, 'info');
+        }
+        
+        if (soundEnabled) {
+            playNotificationSound();
+        }
+    }
+}
+
+/**
+ * Generate a short, pleasant beep using the Web Audio API.
+ * This avoids needing an external mp3 file.
+ */
+function playNotificationSound() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
+        oscillator.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); 
+        
+        gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + 0.5);
+    } catch (e) {
+        console.warn('Audio play failed', e);
     }
 }
