@@ -12,8 +12,7 @@ A privacy-focused, offline AI lifestyle assistant with multi-language support, R
 - **Voice Interface**: Vosk (STT) and Piper TTS for hands-free interaction
 - **Multiple Domains**: Nutrition, fitness, mental health 
 - **100% Offline**: No cloud APIs, no data sent to external services.
-
----
+- **Educational comments** comments in this give clear instruction of what you need to do in this project and understand it comments are written by AI for more clarity
 
 ## Prerequisites Checklist
 
