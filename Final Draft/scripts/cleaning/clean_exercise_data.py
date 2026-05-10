@@ -61,20 +61,16 @@ class ExerciseDataCleaner:
         """
         print("Loading exercise dataset...")
         
-        # rglob searches subdirectories too, catching nested dataset folders
-        exercise_files = list(self.raw_path.rglob('*.csv'))
+        # Look specifically for the megaGymDataset.csv file
+        exercise_files = list(self.raw_path.rglob('megaGymDataset.csv'))
+        
         if exercise_files:
-            # Exclude already-cleaned files to avoid accidentally processing them
-            exercise_files = [f for f in exercise_files if 'cleaned' not in f.name.lower()]
-            if exercise_files:
-                print(f"  Found file: {exercise_files[0].name}")
-                # Use the first CSV found; skip malformed rows rather than crashing
-                self.exercise_df = pd.read_csv(exercise_files[0], on_bad_lines='skip')
-                print(f"\u2713 Loaded {len(self.exercise_df)} exercises\n")
-            else:
-                print("  \u26a0 No exercise dataset found\n")
+            print(f"  Found file: {exercise_files[0].name}")
+            # Use the specific CSV found; skip malformed rows rather than crashing
+            self.exercise_df = pd.read_csv(exercise_files[0], on_bad_lines='skip')
+            print(f"  [OK] Loaded {len(self.exercise_df)} exercises\n")
         else:
-            print("  \u26a0 No exercise dataset found\n")
+            print("  [WARNING] No exercise dataset (megaGymDataset.csv) found\n")
     
     def analyze_data_quality(self) -> None:
         """Analyze data quality."""
@@ -120,7 +116,7 @@ class ExerciseDataCleaner:
           - Add a 'category' column derived from body part and equipment heuristics
         """
         if self.exercise_df is None:
-            print("\u26a0 No exercise data to clean")
+            print("[WARNING] No exercise data to clean")
             return None
         
         print("Cleaning exercise data...")
@@ -178,7 +174,7 @@ class ExerciseDataCleaner:
         # Applied row-wise using a helper method based on body part and equipment clues
         df['category'] = df.apply(self._categorize_exercise, axis=1)
         
-        print(f"\u2713 Exercise data cleaned: {len(df)} rows\n")
+        print(f"[OK] Exercise data cleaned: {len(df)} rows\n")
         return df
     
     def _categorize_exercise(self, row) -> str:
@@ -234,7 +230,7 @@ class ExerciseDataCleaner:
         # Muscle group coverage heatmap
         self._create_muscle_coverage_heatmap(df)
         
-        print("✓ All visualizations created\n")
+        print("[OK] All visualizations created\n")
     
     def _plot_distribution(self, df: pd.DataFrame, column: str, title: str, filename: str, top_n: int = 10) -> None:
         """Create bar chart for distribution."""
@@ -313,7 +309,7 @@ class ExerciseDataCleaner:
         self.save_cleaned_data(cleaned_df)
         
         print("="*60)
-        print("✓ Exercise data cleaning complete!")
+        print("[OK] Exercise data cleaning complete!")
         print("="*60)
         print(f"\nCleaned data saved to: {self.output_path}")
         print(f"Visualizations saved to: {self.viz_path}")
